@@ -7,5 +7,5 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface FactionRepository extends MongoRepository<Faction, String> {
-    Page<Player> findByEnabledTrue(Pageable pageable);
+    Page<Faction> findByEnabledTrue(Pageable pageable);
 }
