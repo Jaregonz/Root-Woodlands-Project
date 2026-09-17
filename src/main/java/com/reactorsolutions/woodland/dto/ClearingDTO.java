@@ -1,26 +1,20 @@
-package com.reactorsolutions.woodland.model;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+package com.reactorsolutions.woodland.dto;
 
 import java.util.List;
 
-@Document(collection = "clearings")
-public class Clearing {
-    @Id
-    private String id;
+public class ClearingDTO {
 
+    private String id;
     private String mapCode;
     private String name;
     private String suit;
     private Integer buildingSlots;
-
     private List<String> adjacentClearingIds;
 
-    public Clearing() {
+    public ClearingDTO() {
     }
 
-    public Clearing(String id, String mapCode, String name, String suit, Integer buildingSlots, List<String> adjacentClearingIds) {
+    public ClearingDTO(String id, String mapCode, String name, String suit, Integer buildingSlots, List<String> adjacentClearingIds) {
         this.id = id;
         this.mapCode = mapCode;
         this.name = name;
