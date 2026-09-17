@@ -3,13 +3,14 @@ package com.reactorsolutions.woodland.service;
 import com.reactorsolutions.woodland.dto.FactionDTO;
 import com.reactorsolutions.woodland.dto.ResponseDTO;
 import com.reactorsolutions.woodland.mapper.FactionMapper;
-import com.reactorsolutions.woodland.model.Faction;
 import com.reactorsolutions.woodland.repository.FactionRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
+import java.util.Optional;
 
 @Service
 public class FactionService {
@@ -33,5 +34,10 @@ public class FactionService {
                 factionsPage.getTotalElements(),
                 factionsPage.getTotalPages()
         );
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<FactionDTO> findById(@PathVariable String id) {
+        return factionRepository.findById(id).map(this.factionMapper::toDto);
     }
 }
