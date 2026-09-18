@@ -29,7 +29,6 @@ public class PlayerService {
         this.playerMapper = playerMapper;
     }
 
-    @Transactional
     public PlayerDTO save(PlayerDTO playerDTO) {
         Player player = playerMapper.toEntity(playerDTO);
         if (player.getId() == null || player.getId().isBlank()) {
@@ -41,12 +40,10 @@ public class PlayerService {
         return playerMapper.toDto(savedPlayer);
     }
 
-    @Transactional(readOnly = true)
     public Optional<PlayerDTO> findById(@PathVariable String id) {
         return playerRepository.findById(id).map(this.playerMapper::toDto);
     }
 
-    @Transactional(readOnly = true)
     public ResponseDTO<PlayerDTO> findAll(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<PlayerDTO> playerPage = playerRepository.findByActiveTrue(pageable)
@@ -61,7 +58,6 @@ public class PlayerService {
         );
     }
 
-    @Transactional
     public PlayerDTO updatePlayer(String id, PlayerUpdateDTO dto) {
         Player playerFound = playerRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Jugador no encontrado con ID: " + id));
@@ -83,7 +79,6 @@ public class PlayerService {
         return playerMapper.toDto(guardado);
     }
 
-    @Transactional
     public PlayerDTO deactivate(String id, Long expectedVersion) {
         Player player = playerRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Jugador no encontrado con ID: " + id));

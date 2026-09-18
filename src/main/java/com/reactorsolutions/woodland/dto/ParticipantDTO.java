@@ -1,8 +1,8 @@
-package com.reactorsolutions.woodland.model;
+package com.reactorsolutions.woodland.dto;
 
-public record Participant(
+public record ParticipantDTO(
         String playerId,
         String displayNameSnapshot,
         String factionCode,
         Integer finalScore
-){}
+) {}

@@ -4,6 +4,7 @@ import com.reactorsolutions.woodland.model.Player;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,4 +13,7 @@ import java.util.Optional;
 @Repository
 public interface PlayerRepository extends MongoRepository<Player, String> {
     Page<Player> findByActiveTrue(Pageable pageable);
+
+    @Query(value = "{ '_id': ?0 }", fields = "{ 'displayName': 1, '_id': 0 }")
+    Optional<String> findDisplayNameById(String id);
 }
