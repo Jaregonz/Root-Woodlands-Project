@@ -26,6 +26,7 @@ public class Game {
     private Instant createdAt;
     private Instant startedAt;
     private Instant finishedAt;
+    private Instant cancelledAt;
 
     @LastModifiedDate
     private Instant updatedAt;
@@ -33,7 +34,7 @@ public class Game {
     @Version
     private Long version;
 
-    public Game(String id, String name, GameStatus status, String mapCode, List<String> clearingIds, List<Participant> participants, String winnerFactionCode, Instant createdAt, Instant startedAt, Instant finishedAt, Instant updatedAt, Long version) {
+    public Game(String id, String name, GameStatus status, String mapCode, List<String> clearingIds, List<Participant> participants, String winnerFactionCode, Instant createdAt, Instant startedAt, Instant finishedAt, Instant cancelledAt, Instant updatedAt, Long version) {
         this.id = id;
         this.name = name;
         this.status = status;
@@ -44,6 +45,7 @@ public class Game {
         this.createdAt = createdAt;
         this.startedAt = startedAt;
         this.finishedAt = finishedAt;
+        this.cancelledAt = cancelledAt;
         this.updatedAt = updatedAt;
         this.version = version;
     }
@@ -142,6 +144,10 @@ public class Game {
         this.finishedAt = finishedAt;
     }
 
+    public Instant getCancelledAt() { return cancelledAt; }
+
+    public void setCancelledAt(Instant cancelledAt) { this.cancelledAt = cancelledAt; }
+
     public Instant getUpdatedAt() {
         return updatedAt;
     }
@@ -150,9 +156,7 @@ public class Game {
         this.updatedAt = updatedAt;
     }
 
-    public Long getVersion() {
-        return version;
-    }
+    public Long getVersion() { return version; }
 
     public void setVersion(Long version) {
         this.version = version;

@@ -29,4 +29,11 @@ public class GameController {
         GameDTO gameStarted = gameService.startGame(id, expectedGameVersion);
         return ResponseEntity.ok(gameStarted);
     }
+
+    @PostMapping("/{id}/cancel")
+    public ResponseEntity<GameDTO> cancelGame(@PathVariable String id, @RequestParam Long expectedGameVersion) {
+        GameDTO gameStarted = gameService.cancelGame(id, expectedGameVersion);
+        return ResponseEntity.ok(gameStarted);
+    }
+
 }

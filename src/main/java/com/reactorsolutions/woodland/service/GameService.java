@@ -76,4 +76,21 @@ public class GameService {
         return gameMapper.toDto(guardado);
     }
 
+    public GameDTO cancelGame(String id, Long expectedGameVersion) {
+        Game gameFound = gameRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Partida no encontrada con ID: " + id));
+
+        if (expectedGameVersion == null || !expectedGameVersion.equals(gameFound.getVersion())) {
+            throw new OptimisticLockingFailureException(
+                    "Conflicto de versión. La versión esperada (" + expectedGameVersion
+                            + ") no coincide con la versión actual (" + gameFound.getVersion() + ")"
+            );
+        }
+
+        gameFound.setStatus(GameStatus.CANCELLED);
+        gameFound.setCancelledAt(Instant.now());
+
+        Game guardado = gameRepository.save(gameFound);
+        return gameMapper.toDto(guardado);
+    }
 }
