@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -65,7 +66,7 @@ public class GameService {
 
     public GameDTO startGame(String id, Long expectedGameVersion) {
         Game gameFound = gameRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Partida no encontrada con ID: " + id));
+                .orElseThrow(() -> new NoSuchElementException("Partida no encontrada con ID: " + id));
 
         if (expectedGameVersion == null || !expectedGameVersion.equals(gameFound.getVersion())) {
             throw new OptimisticLockingFailureException(
@@ -83,7 +84,7 @@ public class GameService {
 
     public GameDTO cancelGame(String id, Long expectedGameVersion) {
         Game gameFound = gameRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Partida no encontrada con ID: " + id));
+                .orElseThrow(() -> new NoSuchElementException("Partida no encontrada con ID: " + id));
 
         if (expectedGameVersion == null || !expectedGameVersion.equals(gameFound.getVersion())) {
             throw new OptimisticLockingFailureException(
@@ -116,4 +117,21 @@ public class GameService {
     public Optional<GameDTO> findById(@PathVariable String id) {
         return gameRepository.findById(id).map(this.gameMapper::toDto);
     }
+
+    public GameDTO deleteDraft(String id, Long expectedVersion) {
+        Game game = gameRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Partida no encontrada con ID: " + id));
+        if (!game.getStatus().equals(GameStatus.DRAFT)) {
+            throw new IllegalStateException("La partida se debe encontrar en estado borrador (DRAFT)");
+        }
+        if (expectedVersion == null || !expectedVersion.equals(game.getVersion())) {
+            throw new OptimisticLockingFailureException(
+                    "Conflicto de versión al eliminar. Versión esperada: " + expectedVersion
+                            + ", Versión actual en BBDD: " + game.getVersion()
+            );
+        }
+        gameRepository.delete(game);
+        return gameMapper.toDto(game);
+    }
+
 }
