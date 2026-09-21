@@ -43,4 +43,11 @@ public class GameController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<GameDTO> findGameById(@PathVariable String id) {
+        return gameService.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
 }
