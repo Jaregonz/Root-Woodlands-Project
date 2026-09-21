@@ -1,7 +1,6 @@
 package com.reactorsolutions.woodland.controller;
 
-import com.reactorsolutions.woodland.dto.CreateGameDTO;
-import com.reactorsolutions.woodland.dto.GameDTO;
+import com.reactorsolutions.woodland.dto.*;
 import com.reactorsolutions.woodland.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,6 +33,14 @@ public class GameController {
     public ResponseEntity<GameDTO> cancelGame(@PathVariable String id, @RequestParam Long expectedGameVersion) {
         GameDTO gameStarted = gameService.cancelGame(id, expectedGameVersion);
         return ResponseEntity.ok(gameStarted);
+    }
+
+    @GetMapping
+    public ResponseEntity<ResponseDTO<GameDTO>> searchGamesFiltered(@RequestParam(defaultValue = "0") int page,
+                                                                    @RequestParam(defaultValue = "20") int size,
+                                                                    GameSearchDTO criteria) {
+        ResponseDTO<GameDTO> response = gameService.search(page, size, criteria);
+        return ResponseEntity.ok(response);
     }
 
 }

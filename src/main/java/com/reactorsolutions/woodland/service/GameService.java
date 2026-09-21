@@ -9,6 +9,9 @@ import com.reactorsolutions.woodland.model.enums.GameStatus;
 import com.reactorsolutions.woodland.repository.GameRepository;
 import com.reactorsolutions.woodland.repository.PlayerRepository;
 import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -92,5 +95,19 @@ public class GameService {
 
         Game guardado = gameRepository.save(gameFound);
         return gameMapper.toDto(guardado);
+    }
+
+    public ResponseDTO<GameDTO> search(int page, int size, GameSearchDTO criteria) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<GameDTO> gamesPage = gameRepository.search(criteria, pageable)
+                .map(gameMapper::toDto);
+
+        return new ResponseDTO<>(
+                gamesPage.getContent(),
+                gamesPage.getNumber(),
+                gamesPage.getSize(),
+                gamesPage.getTotalElements(),
+                gamesPage.getTotalPages()
+        );
     }
 }
