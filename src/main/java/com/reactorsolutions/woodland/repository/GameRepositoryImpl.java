@@ -2,13 +2,16 @@ package com.reactorsolutions.woodland.repository;
 
 import com.reactorsolutions.woodland.dto.GameSearchDTO;
 import com.reactorsolutions.woodland.model.Game;
+import com.reactorsolutions.woodland.model.enums.GameStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.support.PageableExecutionUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,17 +29,30 @@ public class GameRepositoryImpl implements GameRespositorySearch{
         Query query = new Query();
         List<Criteria> criteriaList = new ArrayList<>();
 
+        if (criteria.minFinalScore() != null && criteria.status() != null && criteria.status() != GameStatus.FINISHED) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Solo se puede filtrar por minFinalScore con el estado FINISHED"
+            );
+        }
         if (criteria.status() != null) {
             criteriaList.add(Criteria.where("status").is(criteria.status()));
         }
+
+        List<Criteria> participantFilters = new ArrayList<>();
         if (criteria.playerId() != null) {
-            criteriaList.add(Criteria.where("playerId").is(criteria.playerId()));
+            participantFilters.add(Criteria.where("playerId").is(criteria.playerId()));
         }
         if (criteria.factionCode() != null) {
-            criteriaList.add(Criteria.where("factionCode").is(criteria.factionCode()));
+            participantFilters.add(Criteria.where("factionCode").is(criteria.factionCode()));
         }
-        if (criteria.winnerFactionCode() != null) {
-            criteriaList.add(Criteria.where("winnerFactionCode").is(criteria.winnerFactionCode()));
+        if (criteria.minFinalScore() != null) {
+            participantFilters.add(Criteria.where("finalScore").gte(criteria.minFinalScore()));
+        }
+
+        if (!participantFilters.isEmpty()) {
+            Criteria elemMatchCriteria = new Criteria().andOperator(participantFilters.toArray(new Criteria[0]));
+            criteriaList.add(Criteria.where("participants").elemMatch(elemMatchCriteria));
         }
 
         if (criteria.startedFrom() != null && criteria.startedTo() != null) {
