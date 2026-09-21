@@ -1,7 +1,4 @@
 package com.reactorsolutions.woodland.dto;
-
-import com.reactorsolutions.woodland.model.Participant;
-
 import java.time.Instant;
 import java.util.List;
 
@@ -12,20 +9,25 @@ public class GameDTO {
     private List<ParticipantDTO> participants;
     private String winnerFactionCode;
     private Instant createdAt;
+    private Instant startedAt;
+    private Instant finishedAt;
     private Instant updatedAt;
+    private Long version;
 
     public GameDTO() {
     }
 
-    public GameDTO(String id, String name, String status, List<ParticipantDTO> participants,
-                           String winnerFactionCode, Instant createdAt, Instant updatedAt) {
+    public GameDTO(String id, String name, String status, List<ParticipantDTO> participants, String winnerFactionCode, Instant startedAt, Instant createdAt, Instant finishedAt, Instant updatedAt, Long version) {
         this.id = id;
         this.name = name;
         this.status = status;
         this.participants = participants;
         this.winnerFactionCode = winnerFactionCode;
         this.createdAt = createdAt;
+        this.startedAt = startedAt;
+        this.finishedAt = finishedAt;
         this.updatedAt = updatedAt;
+        this.version = version;
     }
 
     public String getId() {
@@ -76,11 +78,35 @@ public class GameDTO {
         this.createdAt = createdAt;
     }
 
+    public Instant getStartedAt() {
+        return startedAt;
+    }
+
+    public void setStartedAt(Instant startedAt) {
+        this.startedAt = startedAt;
+    }
+
+    public Instant getFinishedAt() {
+        return finishedAt;
+    }
+
+    public void setFinishedAt(Instant finishedAt) {
+        this.finishedAt = finishedAt;
+    }
+
     public Instant getUpdatedAt() {
         return updatedAt;
     }
 
     public void setUpdatedAt(Instant updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 }

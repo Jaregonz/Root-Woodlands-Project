@@ -1,16 +1,17 @@
 package com.reactorsolutions.woodland.service;
 
-import com.reactorsolutions.woodland.dto.CreateGameDTO;
-import com.reactorsolutions.woodland.dto.CreateParticipantDTO;
-import com.reactorsolutions.woodland.dto.GameDTO;
+import com.reactorsolutions.woodland.dto.*;
 import com.reactorsolutions.woodland.mapper.GameMapper;
 import com.reactorsolutions.woodland.model.Game;
 import com.reactorsolutions.woodland.model.Participant;
 import com.reactorsolutions.woodland.model.Player;
+import com.reactorsolutions.woodland.model.enums.GameStatus;
 import com.reactorsolutions.woodland.repository.GameRepository;
 import com.reactorsolutions.woodland.repository.PlayerRepository;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -56,4 +57,23 @@ public class GameService {
 
         return gameMapper.toDto(gameRepository.save(game));
     }
+
+    public GameDTO startGame(String id, Long expectedGameVersion) {
+        Game gameFound = gameRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Partida no encontrada con ID: " + id));
+
+        if (expectedGameVersion == null || !expectedGameVersion.equals(gameFound.getVersion())) {
+            throw new OptimisticLockingFailureException(
+                    "Conflicto de versión. La versión esperada (" + expectedGameVersion
+                            + ") no coincide con la versión actual (" + gameFound.getVersion() + ")"
+            );
+        }
+
+        gameFound.setStatus(GameStatus.IN_PROGRESS);
+        gameFound.setStartedAt(Instant.now());
+
+        Game guardado = gameRepository.save(gameFound);
+        return gameMapper.toDto(guardado);
+    }
+
 }
