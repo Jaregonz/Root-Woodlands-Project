@@ -50,4 +50,12 @@ public class GameController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<GameDTO> deleteDraft(
+            @PathVariable String id,
+            @RequestParam Long expectedVersion) {
+
+        GameDTO deletedDraft = gameService.deleteDraft(id, expectedVersion);
+        return ResponseEntity.ok(deletedDraft);
+    }
 }

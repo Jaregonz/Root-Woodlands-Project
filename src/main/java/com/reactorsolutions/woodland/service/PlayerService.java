@@ -12,11 +12,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class PlayerService {
@@ -60,7 +58,7 @@ public class PlayerService {
 
     public PlayerDTO updatePlayer(String id, PlayerUpdateDTO dto) {
         Player playerFound = playerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Jugador no encontrado con ID: " + id));
+                .orElseThrow(() -> new NoSuchElementException("Jugador no encontrado con ID: " + id));
 
         if (dto.getExpectedVersion() == null || !dto.getExpectedVersion().equals(playerFound.getVersion())) {
             throw new OptimisticLockingFailureException(
@@ -98,5 +96,4 @@ public class PlayerService {
 
         return playerMapper.toDto(desactivado);
     }
-
 }
