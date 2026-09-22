@@ -1,7 +1,10 @@
 package com.reactorsolutions.woodland.controller;
 
 import com.reactorsolutions.woodland.dto.*;
+import com.reactorsolutions.woodland.model.Turn;
 import com.reactorsolutions.woodland.service.GameService;
+import com.reactorsolutions.woodland.service.TurnService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,10 +14,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/games")
 public class GameController {
     private final GameService gameService;
+    private final TurnService turnService;
 
     @Autowired
-    public GameController(GameService gameService) {
+    public GameController(GameService gameService, TurnService turnService) {
         this.gameService = gameService;
+        this.turnService = turnService;
     }
 
     @PostMapping
@@ -58,4 +63,11 @@ public class GameController {
         GameDTO deletedDraft = gameService.deleteDraft(id, expectedVersion);
         return ResponseEntity.ok(deletedDraft);
     }
+
+    @PostMapping("/{idGame}/turns")
+    public ResponseEntity<Turn> createTurn(@PathVariable String idGame,
+                                           @Valid @RequestBody CreateTurnDTO createTurnDTO) {
+        return new ResponseEntity<>(turnService.createTurn(idGame, createTurnDTO), HttpStatus.CREATED);
+    }
+
 }

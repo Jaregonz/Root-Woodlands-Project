@@ -22,7 +22,6 @@ import jakarta.validation.constraints.NotNull;
         @JsonSubTypes.Type(value = RemoveTokenAction.class, name = "REMOVE_TOKEN")
 })
 public abstract class Action {
-    @NotNull
     private String actionId;
 
     @NotNull
