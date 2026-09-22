@@ -1,5 +1,6 @@
 package com.reactorsolutions.woodland.model;
 
+import com.reactorsolutions.woodland.model.enums.ActionType;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -11,8 +12,18 @@ public class MoveAction extends Action {
     @NotNull
     private MovePayload move;
 
-    public MovePayload getMove() { return move; }
-    public void setMove(MovePayload move) { this.move = move; }
+    public MovePayload getMove() {
+        return move;
+    }
+
+    public void setMove(MovePayload move) {
+        this.move = move;
+    }
+
+    @Override
+    public ActionType getType() {
+        return ActionType.MOVE;
+    }
 
     public static class MovePayload {
         @NotNull
@@ -25,13 +36,28 @@ public class MoveAction extends Action {
         @Max(100)
         private int warriors;
 
-        public String getFromClearingId() { return fromClearingId; }
-        public void setFromClearingId(String fromClearingId) { this.fromClearingId = fromClearingId; }
+        public String getFromClearingId() {
+            return fromClearingId;
+        }
 
-        public String getToClearingId() { return toClearingId; }
-        public void setToClearingId(String toClearingId) { this.toClearingId = toClearingId; }
+        public void setFromClearingId(String fromClearingId) {
+            this.fromClearingId = fromClearingId;
+        }
 
-        public int getWarriors() { return warriors; }
-        public void setWarriors(int warriors) { this.warriors = warriors; }
+        public String getToClearingId() {
+            return toClearingId;
+        }
+
+        public void setToClearingId(String toClearingId) {
+            this.toClearingId = toClearingId;
+        }
+
+        public int getWarriors() {
+            return warriors;
+        }
+
+        public void setWarriors(int warriors) {
+            this.warriors = warriors;
+        }
     }
 }

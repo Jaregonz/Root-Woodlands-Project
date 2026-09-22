@@ -3,7 +3,6 @@ package com.reactorsolutions.woodland.model;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.reactorsolutions.woodland.model.enums.ActionType;
-import jakarta.validation.constraints.NotNull;
 
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
@@ -24,12 +23,13 @@ import jakarta.validation.constraints.NotNull;
 public abstract class Action {
     private String actionId;
 
-    @NotNull
-    private ActionType type;
+    public String getActionId() {
+        return actionId;
+    }
 
-    public String getActionId() { return actionId; }
-    public void setActionId(String actionId) { this.actionId = actionId; }
+    public void setActionId(String actionId) {
+        this.actionId = actionId;
+    }
 
-    public ActionType getType() { return type; }
-    public void setType(ActionType type) { this.type = type; }
+    public abstract ActionType getType();
 }

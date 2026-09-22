@@ -1,5 +1,6 @@
 package com.reactorsolutions.woodland.model;
 
+import com.reactorsolutions.woodland.model.enums.ActionType;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -14,11 +15,26 @@ public class RemoveTokenAction extends Action {
     @NotNull
     private TokenPayload token;
 
-    public String getClearingId() { return clearingId; }
-    public void setClearingId(String clearingId) { this.clearingId = clearingId; }
+    public String getClearingId() {
+        return clearingId;
+    }
 
-    public TokenPayload getToken() { return token; }
-    public void setToken(TokenPayload token) { this.token = token; }
+    public void setClearingId(String clearingId) {
+        this.clearingId = clearingId;
+    }
+
+    public TokenPayload getToken() {
+        return token;
+    }
+
+    public void setToken(TokenPayload token) {
+        this.token = token;
+    }
+
+    @Override
+    public ActionType getType() {
+        return ActionType.MOVE;
+    }
 
     public static class TokenPayload {
         @NotNull
@@ -29,10 +45,20 @@ public class RemoveTokenAction extends Action {
         @Max(100)
         private int quantity;
 
-        public String getTokenType() { return tokenType; }
-        public void setTokenType(String tokenType) { this.tokenType = tokenType; }
+        public String getTokenType() {
+            return tokenType;
+        }
 
-        public int getQuantity() { return quantity; }
-        public void setQuantity(int quantity) { this.quantity = quantity; }
+        public void setTokenType(String tokenType) {
+            this.tokenType = tokenType;
+        }
+
+        public int getQuantity() {
+            return quantity;
+        }
+
+        public void setQuantity(int quantity) {
+            this.quantity = quantity;
+        }
     }
 }

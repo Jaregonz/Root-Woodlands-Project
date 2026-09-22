@@ -1,5 +1,6 @@
 package com.reactorsolutions.woodland.model;
 
+import com.reactorsolutions.woodland.model.enums.ActionType;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -12,8 +13,18 @@ public class CraftAction extends Action {
     @NotNull
     private CraftPayload craft;
 
-    public CraftPayload getCraft() { return craft; }
-    public void setCraft(CraftPayload craft) { this.craft = craft; }
+    public CraftPayload getCraft() {
+        return craft;
+    }
+
+    public void setCraft(CraftPayload craft) {
+        this.craft = craft;
+    }
+
+    @Override
+    public ActionType getType() {
+        return ActionType.CRAFT;
+    }
 
     public static class CraftPayload {
         @NotNull
@@ -24,10 +35,20 @@ public class CraftAction extends Action {
         @Max(20)
         private int quantity;
 
-        public String getItemCode() { return itemCode; }
-        public void setItemCode(String itemCode) { this.itemCode = itemCode; }
+        public String getItemCode() {
+            return itemCode;
+        }
 
-        public int getQuantity() { return quantity; }
-        public void setQuantity(int quantity) { this.quantity = quantity; }
+        public void setItemCode(String itemCode) {
+            this.itemCode = itemCode;
+        }
+
+        public int getQuantity() {
+            return quantity;
+        }
+
+        public void setQuantity(int quantity) {
+            this.quantity = quantity;
+        }
     }
 }

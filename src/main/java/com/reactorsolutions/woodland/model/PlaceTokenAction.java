@@ -1,12 +1,13 @@
 package com.reactorsolutions.woodland.model;
 
+import com.reactorsolutions.woodland.model.enums.ActionType;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
-public class PlaceTokenAction extends Action{
+public class PlaceTokenAction extends Action {
 
     @NotNull
     private String clearingId;
@@ -14,11 +15,27 @@ public class PlaceTokenAction extends Action{
     @Valid
     @NotNull
     private TokenPayload token;
-    public String getClearingId() { return clearingId; }
-    public void setClearingId(String clearingId) { this.clearingId = clearingId; }
 
-    public TokenPayload getToken() { return token; }
-    public void setToken(TokenPayload token) { this.token = token; }
+    public String getClearingId() {
+        return clearingId;
+    }
+
+    public void setClearingId(String clearingId) {
+        this.clearingId = clearingId;
+    }
+
+    public TokenPayload getToken() {
+        return token;
+    }
+
+    public void setToken(TokenPayload token) {
+        this.token = token;
+    }
+
+    @Override
+    public ActionType getType() {
+        return ActionType.PLACE_TOKEN;
+    }
 
     public static class TokenPayload {
         @NotNull
@@ -29,10 +46,20 @@ public class PlaceTokenAction extends Action{
         @Max(100)
         private int quantity;
 
-        public String getTokenType() { return tokenType; }
-        public void setTokenType(String tokenType) { this.tokenType = tokenType; }
+        public String getTokenType() {
+            return tokenType;
+        }
 
-        public int getQuantity() { return quantity; }
-        public void setQuantity(int quantity) { this.quantity = quantity; }
+        public void setTokenType(String tokenType) {
+            this.tokenType = tokenType;
+        }
+
+        public int getQuantity() {
+            return quantity;
+        }
+
+        public void setQuantity(int quantity) {
+            this.quantity = quantity;
+        }
     }
 }

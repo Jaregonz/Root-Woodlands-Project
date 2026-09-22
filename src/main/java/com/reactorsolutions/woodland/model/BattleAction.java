@@ -1,5 +1,6 @@
 package com.reactorsolutions.woodland.model;
 
+import com.reactorsolutions.woodland.model.enums.ActionType;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -19,6 +20,11 @@ public class BattleAction extends Action {
 
     public BattlePayload getBattle() { return battle; }
     public void setBattle(BattlePayload battle) { this.battle = battle; }
+
+    @Override
+    public ActionType getType() {
+        return ActionType.BATTLE;
+    }
 
     public static class BattlePayload {
         @NotNull

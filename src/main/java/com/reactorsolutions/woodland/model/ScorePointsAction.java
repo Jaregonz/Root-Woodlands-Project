@@ -1,5 +1,6 @@
 package com.reactorsolutions.woodland.model;
 
+import com.reactorsolutions.woodland.model.enums.ActionType;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -12,8 +13,18 @@ public class ScorePointsAction extends Action {
     @NotNull
     private ScorePayload score;
 
-    public ScorePayload getScore() { return score; }
-    public void setScore(ScorePayload score) { this.score = score; }
+    public ScorePayload getScore() {
+        return score;
+    }
+
+    public void setScore(ScorePayload score) {
+        this.score = score;
+    }
+
+    @Override
+    public ActionType getType() {
+        return ActionType.SCORE_POINTS;
+    }
 
     public static class ScorePayload {
         @Min(1)
@@ -24,10 +35,20 @@ public class ScorePointsAction extends Action {
         @Size(min = 1, max = 200)
         private String reason;
 
-        public int getPoints() { return points; }
-        public void setPoints(int points) { this.points = points; }
+        public int getPoints() {
+            return points;
+        }
 
-        public String getReason() { return reason; }
-        public void setReason(String reason) { this.reason = reason; }
+        public void setPoints(int points) {
+            this.points = points;
+        }
+
+        public String getReason() {
+            return reason;
+        }
+
+        public void setReason(String reason) {
+            this.reason = reason;
+        }
     }
 }
