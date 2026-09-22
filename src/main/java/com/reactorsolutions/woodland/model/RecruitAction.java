@@ -1,5 +1,6 @@
 package com.reactorsolutions.woodland.model;
 
+import com.reactorsolutions.woodland.model.enums.ActionType;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -19,6 +20,11 @@ public class RecruitAction extends Action {
 
     public RecruitPayload getRecruit() { return recruit; }
     public void setRecruit(RecruitPayload recruit) { this.recruit = recruit; }
+
+    @Override
+    public ActionType getType() {
+        return ActionType.RECRUIT;
+    }
 
     public static class RecruitPayload {
         @Min(1)
