@@ -1,6 +1,8 @@
 package com.reactorsolutions.woodland.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.OptimisticLockingFailureException;
@@ -20,6 +22,7 @@ import java.net.URI;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -65,6 +68,24 @@ public class GlobalExceptionHandler {
         for (FieldError error : exception.getBindingResult().getFieldErrors()) {
             errors.putIfAbsent(error.getField(), error.getDefaultMessage());
         }
+        exception.getBindingResult().getGlobalErrors().forEach(error ->
+                errors.putIfAbsent(error.getObjectName(), error.getDefaultMessage()));
+        return validationResponse(errors, request);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ProblemDetail> handleConstraintViolation(ConstraintViolationException exception,
+                                                                    HttpServletRequest request) {
+        Map<String, String> errors = new LinkedHashMap<>();
+        Set<ConstraintViolation<?>> violations = exception.getConstraintViolations();
+        for (ConstraintViolation<?> violation : violations) {
+            errors.putIfAbsent(violation.getPropertyPath().toString(), violation.getMessage());
+        }
+        return validationResponse(errors, request);
+    }
+
+    private ResponseEntity<ProblemDetail> validationResponse(Map<String, String> errors,
+                                                              HttpServletRequest request) {
         ProblemDetail problem = problem(HttpStatus.BAD_REQUEST, "Datos no válidos",
                 "Uno o más campos no superan la validación.", request, "validation-error");
         problem.setProperty("errors", errors);
