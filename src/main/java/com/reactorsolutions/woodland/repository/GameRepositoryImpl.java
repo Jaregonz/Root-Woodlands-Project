@@ -1,6 +1,6 @@
 package com.reactorsolutions.woodland.repository;
 
-import com.reactorsolutions.woodland.dto.GameSearchDTO;
+import com.reactorsolutions.woodland.dto.GameSearchCriteriaDTO;
 import com.reactorsolutions.woodland.model.Game;
 import com.reactorsolutions.woodland.model.enums.GameStatus;
 import org.springframework.data.domain.Page;
@@ -25,7 +25,7 @@ public class GameRepositoryImpl implements GameRespositorySearch{
     }
 
     @Override
-    public Page<Game> search(GameSearchDTO criteria, Pageable pageable) {
+    public Page<Game> search(GameSearchCriteriaDTO criteria, Pageable pageable) {
         Query query = new Query();
         List<Criteria> criteriaList = new ArrayList<>();
 

@@ -1,7 +1,6 @@
 package com.reactorsolutions.woodland.controller;
 
 import com.reactorsolutions.woodland.dto.*;
-import com.reactorsolutions.woodland.model.Turn;
 import com.reactorsolutions.woodland.service.GameService;
 import com.reactorsolutions.woodland.service.TurnService;
 import jakarta.validation.Valid;
@@ -23,9 +22,9 @@ public class GameController {
     }
 
     @PostMapping
-    public ResponseEntity<GameDTO> createPlayer(@RequestBody CreateGameDTO createGameDTO) {
-        GameDTO newPlayer = gameService.createGame(createGameDTO);
-        return new ResponseEntity<>(newPlayer, HttpStatus.CREATED);
+    public ResponseEntity<GameDTO> createGame(@RequestBody CreateGameDTO createGameDTO) {
+        GameDTO newGame = gameService.createGame(createGameDTO);
+        return new ResponseEntity<>(newGame, HttpStatus.CREATED);
     }
 
     @PostMapping("/{id}/start")
@@ -43,7 +42,7 @@ public class GameController {
     @GetMapping
     public ResponseEntity<ResponseDTO<GameDTO>> searchGamesFiltered(@RequestParam(defaultValue = "0") int page,
                                                                     @RequestParam(defaultValue = "20") int size,
-                                                                    GameSearchDTO criteria) {
+                                                                    GameSearchCriteriaDTO criteria) {
         ResponseDTO<GameDTO> response = gameService.search(page, size, criteria);
         return ResponseEntity.ok(response);
     }
@@ -65,9 +64,17 @@ public class GameController {
     }
 
     @PostMapping("/{idGame}/turns")
-    public ResponseEntity<Turn> createTurn(@PathVariable String idGame,
-                                           @Valid @RequestBody CreateTurnDTO createTurnDTO) {
+    public ResponseEntity<TurnDTO> createTurn(@PathVariable String idGame,
+                                              @Valid @RequestBody CreateTurnDTO createTurnDTO) {
         return new ResponseEntity<>(turnService.createTurn(idGame, createTurnDTO), HttpStatus.CREATED);
     }
 
+    @GetMapping("/{idGame}/turns")
+    public ResponseEntity<ResponseDTO<TurnDTO>> searchGameTurnsFiltered(@PathVariable String idGame,
+                                                                        @RequestParam(defaultValue = "0") int page,
+                                                                        @RequestParam(defaultValue = "20") int size,
+                                                                        @RequestBody TurnSearchCriteriaDTO criteria) {
+        ResponseDTO<TurnDTO> response = turnService.search(idGame, page, size, criteria);
+        return ResponseEntity.ok(response);
+    }
 }

@@ -15,11 +15,21 @@ public class RecruitAction extends Action {
     @NotNull
     private RecruitPayload recruit;
 
-    public String getClearingId() { return clearingId; }
-    public void setClearingId(String clearingId) { this.clearingId = clearingId; }
+    public String getClearingId() {
+        return clearingId;
+    }
 
-    public RecruitPayload getRecruit() { return recruit; }
-    public void setRecruit(RecruitPayload recruit) { this.recruit = recruit; }
+    public void setClearingId(String clearingId) {
+        this.clearingId = clearingId;
+    }
+
+    public RecruitPayload getRecruit() {
+        return recruit;
+    }
+
+    public void setRecruit(RecruitPayload recruit) {
+        this.recruit = recruit;
+    }
 
     @Override
     public ActionType getType() {
@@ -31,7 +41,12 @@ public class RecruitAction extends Action {
         @Max(100)
         private int warriors;
 
-        public int getWarriors() { return warriors; }
-        public void setWarriors(int warriors) { this.warriors = warriors; }
+        public int getWarriors() {
+            return warriors;
+        }
+
+        public void setWarriors(int warriors) {
+            this.warriors = warriors;
+        }
     }
 }

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.Instant;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -94,13 +95,13 @@ public class GameService {
         }
 
         gameFound.setStatus(GameStatus.CANCELLED);
-        gameFound.setCancelledAt(Instant.now());
+        gameFound.setCancelledAt(Instant.now().atZone(ZoneId.of("Europe/Madrid")).toInstant());
 
         Game guardado = gameRepository.save(gameFound);
         return gameMapper.toDto(guardado);
     }
 
-    public ResponseDTO<GameDTO> search(int page, int size, GameSearchDTO criteria) {
+    public ResponseDTO<GameDTO> search(int page, int size, GameSearchCriteriaDTO criteria) {
         Pageable pageable = PageRequest.of(page, size);
         Page<GameDTO> gamesPage = gameRepository.search(criteria, pageable)
                 .map(gameMapper::toDto);

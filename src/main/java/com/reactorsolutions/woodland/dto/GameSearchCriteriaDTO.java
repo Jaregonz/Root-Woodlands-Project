@@ -5,7 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.Instant;
 
-public record GameSearchDTO(
+public record GameSearchCriteriaDTO(
         GameStatus status,
         String playerId,
         String factionCode,
