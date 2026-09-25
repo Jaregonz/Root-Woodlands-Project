@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface TurnRepository extends MongoRepository<Turn, String>, TurnRepositorySearch {
     Optional<Turn> findTopByGameIdOrderBySequenceDesc(String gameId);
+
+    Optional<Turn> findByIdAndGameId(String id, String gameId);
 }

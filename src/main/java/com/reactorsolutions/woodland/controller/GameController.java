@@ -77,4 +77,12 @@ public class GameController {
         ResponseDTO<TurnDTO> response = turnService.search(idGame, page, size, criteria);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/{idGame}/turns/{idTurn}")
+    public ResponseEntity<TurnDTO> findTurnByGameAndId(@PathVariable String idGame,
+                                                        @PathVariable String idTurn) {
+        return turnService.findByGameIdAndId(idGame, idTurn)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 }

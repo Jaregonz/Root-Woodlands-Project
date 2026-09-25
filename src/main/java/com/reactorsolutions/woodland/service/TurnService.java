@@ -65,6 +65,11 @@ public class TurnService {
         }
     }
 
+    public Optional<TurnDTO> findByGameIdAndId(String gameId, String turnId) {
+        return turnRepository.findByIdAndGameId(turnId, gameId)
+                .map(turnMapper::toDto);
+    }
+
     private void validateOccurredAt(Game game, Turn previousTurn, Instant occurredAt) {
         if (game.getStartedAt() == null) {
             throw new IllegalStateException("No se puede crear un turno en una partida que no ha comenzado");
